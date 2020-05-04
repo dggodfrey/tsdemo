@@ -8,6 +8,7 @@
             "@utils": ["src/utils"],
 		},
 		"allowSyntheticDefaultImports": true,
+		"allowUnreachableCode": false,
 		"alwaysStrict": true,
 		"downlevelIteration": true,
 		"esModuleInterop": true,
@@ -19,7 +20,11 @@
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
-		"target": "ES5"
+		"target": "ES5",
+		// "noImplicitAny": true,
+		"strictNullChecks": true,
+		// "allowJs": true,
+		// "checkJs": true
 	},
 	"exclude": []
 }
