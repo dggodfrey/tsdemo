@@ -2,68 +2,56 @@
 
 ## Details - Understanding the Code
 
-1. Added `typescript` and `@types/react` to package.json
-2. Added `tsconfig.json` to the root of the project
-3. Added examples of types and type conversion to legacy util.ts
+1. Changed extension - `src/utils/index.js` -> `src/utils/index.ts`
+2. `src/utils/ajax.ts` broke data into interface
+   1. Interface is a group/object of types
+   2. Can also use `Type` for single
+   3. Also added return type in TS
 
 
 ## Try it Out
 
-1. Lets convert a few files to TS (done branch: step-2a)
-   1. `src/legacy/deeply/nested/because/why/not/else/util.js`
-      1. [Basic types](https://www.typescriptlang.org/docs/handbook/basic-types.html)
-      2. Type conversion
-      3. Update function return type to `string`
-         1. Since this function is literally returning `hi` we can also return `hi`
-            1. This specificity can come in handy for certain functions and can be used for more complicated generics
-      4. Generics - Advanced TS. - They are variables that can hold types or modify types on the fly.
-         1. You don't have to use them. 
-         2. If you want help making one or want to learn more, lets do another training.
-      5. Now that this file is converted, lets look at some of the cool things we can do with just this function so far.
-         1. open `tsconfig.json` and uncomment out the 2 lines for `allowJs` and `checkJs`.
-         2. Open `src/components/componentB/componentBFunctional.js`
-            1. notice our import is wrong. Update `import hi from` to `import {hi} from`
-               1. Not so much a note of TS as much as a bad mistake of mine I am too lazy to go back and update. However, I am disappointed that the editor with all the plugins didn't catch it. 
-            2. Now you can hover over `hi` and see exactly what is going on!
-            3. You can command+click the function name and be taken directly to the function! 
-               1. right click and 'Go to Definition' also works!
-         3. open `tsconfig.json` and comment out the 2 lines for `allowJs` and `checkJs`.
-         4. now go back to `src/components/componentB/componentBFunctional.js`
-            1. Even with the fixed import `hi` doesn't give any details when hovered over.
-            2. Try command+click on `hi`.
-               1. Oh, it doesn't work.
-               2. Try right click and 'Go to Definition'.
-                  1. Damn, no luck
-         5. make sure `allowJs` and `checkJs` are commented out in `tsconfig.json`. We are going to keep going in our conversion.
-            1. We don't have to enforce these for everyone. But, those that want them can add them to a workspace config and get all the benefits of TS in JS without the entire team having to have it. Pretty cool, eh!
-   2. Lets do a more complicated and advanced file, now! `src/utils/utils.js` (done branch: step-2b)
-      1. Rename the file to be `.ts`
-      2. Notice there is one error! It is where we are trying to call the function with no params.
-      3. This looks complicated, but lets convert this one part at a time. We are going to overload the function
-         1. First start with the base. `someHelpfulUtil(item?: any): any {`
-         2. Just work your way through the function defining all the different combinations of types
-         3. Notice we still have an error for when we don't pass anything to the function
-            1. We get a warning. We never handled a case where nothing is returned. It called out to us a potential issue. Now we have 2 decisions:
-               1. Do we need to handle nothing and return something?
-               2. Do we just overload the function so it knows nothing will be returned?
-      4. WAIT A MINUTE?! In the first step we were tricked into believing there was a type error here! There is no error! Lies! Deceit! TS doesn't help me with bugs or knowing more about my code!
-         1. Go to `tsconfig.json` and uncomment the line with `strictNullChecks`. By default this is turned off.
-         2. Notice we get some warnings! Now it is correctly telling us that null can't be turned into a `string[]`
-         3. Lets have a discussion about why this isn't on by default.
-            1. It would surprise you how this setting shows different places where things could be missed! Very rarely are they false positives. It can be overwhelming in a large project to have that on and enforced.
-            2. In a legacy project this creates a lot of noise and when on prevents the file from  compiling. It is easy to get into TS and then approach this later.
-               1. TS Evangelicals will think implementing TS without this feature is a waste and then not worth moving to TS at all. I disagree. TS still provides a lot of value
-               2. Also, more advanced TS users can override the tsconfig and enable this setting. So, those of us that want it can use it, without overwhelming TS newcomers. 
-               3. A similar setting to this is `noImplicitAny`. This is what makes it so TS won't let you do `any` types (which is the catch all).
-               4. There is a line in my mind where a tool is helpful and where it gets in the way. Personally I am a fan of `strictNullChecks`, but I am not a fan of `noImplicitAny`. <- Personal preference and belief. If you are the type of person who wants that, then enable it!
-         4. The most important question to ask yourself here: "Would you have caught that on your own?". I am not even going to pretend to be a JS master. I love the hints, the suggestions, and the potential pitfalls. I sometimes move really fast and assume my stuff will be used in a specific way, but in reality, since JS is dynamic, I have to be careful with my assumptions. 
-         5. Go to `tsconfig.json` and comment the line with `strictNullChecks`. We want to disable it again.
-   3. Last file: `src/utils/ajax.js` (done branch: step-2c)
-      1. rename file to `.ts`
-      2. Notice we get no warning about the else block being reached. `data` will always be truthy the way it is written.
-         1. There is an eslint rule to help with this.
-         2. Pointing out because TS is great, but also has some things to improve on!
+1. Lets convert our components to TS and link everything together
+   1. `src/components/componentA/componentAClass.js`
+      1. rename to `.tsx`
+      2. Notice when you hover over `data` in `componentDidMount` it tells you what Interface it is!
+         1. You now have full autocomplete with asynchronous functions!
+      3. We need to tell TS that the `data` is going to be set as the data in state.
+         1. It is important to understand that even though we already know the type of the data, TS has already set `state` and `state.data` as `any`. This is because even though it could infer the types, it doesn't because state could be changed, modified, and could potentially be changed not to follow the data structure we have. It is important to understand infer !== assume.
+         2. Create an interface for state
+            1. we want to create an interface for state because we may want to change it later!
+            2. We already exported the interface from ajax for you. So, if you just start typing userData, it will autocomplete and auto import it for you.
+            3. Since we want to also support an empty object so we can access properties even if they aren't available yet, we can tell TS we want to allow an empty object: `user: userData | {};`
+   2. `src/components/componentB/componentBFunctional.js`
+      1. rename to `.tsx`
+      2. Notice when you hover over `props`, we still don't have type hinting. Shouldn't it know that we are passing it a `userData` type?
+         1. Again... assume !== infer. This is where the power of TS really comes in. We know more than what the code can infer from usage! So, lets give those details to TS so it can help us out.
+      3. Create an interface for props. It will have 2 props: `user` and `callback`
+      4. Now that is done, you can remove any of the `props.user.*` and see that you get autocomplete because we now know what the type is.
+         1. If you added the same type as in `ComponentA` you will get an error that 'user' and the other properties are not available on `{}`. You may think: "Ugh. See, this is why TS is so frustrating and a waste of time." The problem isn't hard to fix, but we are now very aware that when our child component is initialized, it could potentially be an empty object! We are on our way to more resilient code! Lets fix it! We have a few choices:
+            1. Make all the properties optional in the ajax file where we defined `userData`
+            2. Make a generic of the data so we can dynamically make all the fields optional
+            3. Set the initial value to undefined in `ComponentA` and then handle that in `ComponentB`
+         2. I like the Idea of #3. We can show the user it is still loading, and the update when the data comes in! Better user experience and better data handling. (I will put the generic for #2 in a comment in the done code, just in case you are curious - It will use a utility type!)
+   3. Go back to `src/components/componentA/componentAClass.tsx`
+      1. Remove the props from `<ComponentBFunctional  />`
+         1. Notice there is a warning! We are missing props!
+         2. press ctrl+space and you will see all the props and their types!
+         3. You can now edit `ComponentB` and make some optional, or do whatever you like
+      2. We did this a little backwards, but can you see how helpful TS can be? Lets have a little more fun ;)
+2. Lets do some of the things that didn't work in the first step.
+   1. `src/utils/utils.ts`
+      1. Refactor `someHelpfulUtil` to `someHelpfulUtilOfAmazingness` Remember how much better that name was?!
+         1. It updated our utils file AND `ComponentB`! Even with the `import * as utils`! 😱
+            1. Previously that didn't work, because JS intellisense couldn't link them together. 
+            2. TS has its own paths attribute in `tsconfig.json` so it knows how all the aliases and files are linked!
+               1. What does this mean? You can rename, refactor, move files around, etc and TS will be able to update all the other files that use or reference it! No more searching the project for imports to update them manually. 
+                  1. NOTE: The Path Intellisense can help with this, but not when the import is a `* as`. It also doesn't always work or catch all of the instances. With TS, it can catch all instances (and can even do it for non-ts files if `allowJS` and `checkJS` are enabled)
+                  2. It is the difference between a plugin getting you 90% of the way there and TS doing the other 10.
+   2. `src/legacy/deeply/nested/because/why/not/else/util.ts`
+      1. Refactor `hi` to `hello`
+         1. It was updated in the file AND in `ComponentB`! Huzzah!
 
+## Final Notes
 
-
-
+I hope this shows how TS can be used to help you as a developer. This just scratches the surface. TS doesn't replace JS, nor does it fix any JS issues. It just bridges the gap of what it currently can do, and what its potential is when we give it more information! TS will only be as good as the interfaces and types that are written. Which is why you can still have bugs with TS. But, the ability to have self documenting code that can help you get back into context faster than having to dig through code manually, it is invaluable. And if it can help you see, understand, and refactor more reliably and quickly. Why not at least give it a try?!
