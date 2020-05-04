@@ -1,4 +1,4 @@
-function get() {
+export function get() {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             // some asynchronous request to BE
