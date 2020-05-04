@@ -26,6 +26,6 @@ type aFunction = (param1: string, param2: number) => [string, number]
 const aCast: boolean = (<boolean><unknown>aNumber); // NOT SUPPORTED IN JSX
 const aCast1: boolean = aNumber as unknown as boolean;
 
-export function hi(): string {
+export function hello(): string {
     return 'hi';
 }

@@ -1,11 +1,11 @@
 
-function someHelpfulUtil(item: string): number;
-function someHelpfulUtil(item: boolean): string;
-function someHelpfulUtil(item: object): string[];
-function someHelpfulUtil(item: number): {[key: number]: string};
-function someHelpfulUtil(item: Array<any>): number;
-function someHelpfulUtil(): void;
-function someHelpfulUtil(item?: any): any {
+export function someHelpfulUtilOfAmazingness(item: string): number;
+export function someHelpfulUtilOfAmazingness(item: boolean): string;
+export function someHelpfulUtilOfAmazingness(item: object): string[];
+export function someHelpfulUtilOfAmazingness(item: number): {[key: number]: string};
+export function someHelpfulUtilOfAmazingness(item: Array<any>): number;
+export function someHelpfulUtilOfAmazingness(): void;
+export function someHelpfulUtilOfAmazingness(item?: any): any {
     if (typeof item === 'string') {
         return 0;
     } else if (typeof item === 'boolean') {
@@ -19,12 +19,10 @@ function someHelpfulUtil(item?: any): any {
     }
 }
 
-export { someHelpfulUtil };
-
-const test1 = someHelpfulUtil('hi'); // 0
-const test2 = someHelpfulUtil(true); // 'foo'
-const test3 = someHelpfulUtil(['hi', 'bob']); // 2
-const test4 = someHelpfulUtil({'1': '2'}); // ['1']
-const test5 = someHelpfulUtil(2); // {'2': '1'}
-const test6 = someHelpfulUtil(); // 
-const test7 = someHelpfulUtil(null); // ??? <- What will it return?
+const test1 = someHelpfulUtilOfAmazingness('hi'); // 0
+const test2 = someHelpfulUtilOfAmazingness(true); // 'foo'
+const test3 = someHelpfulUtilOfAmazingness(['hi', 'bob']); // 2
+const test4 = someHelpfulUtilOfAmazingness({'1': '2'}); // ['1']
+const test5 = someHelpfulUtilOfAmazingness(2); // {'2': '1'}
+const test6 = someHelpfulUtilOfAmazingness(); // 
+const test7 = someHelpfulUtilOfAmazingness(null); // ??? <- What will it return?
