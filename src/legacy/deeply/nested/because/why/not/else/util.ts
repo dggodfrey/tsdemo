@@ -19,10 +19,13 @@ const aNever = (): never => {
     throw new Error('message');
 };
 
+// Typing functions
+type aFunction = (param1: string, param2: number) => [string, number]
+
 // Type casting - NOTE!!!!! `as` syntax must be used in JSX
-const aCast: boolean = (<boolean><unknown>aNumber);
+const aCast: boolean = (<boolean><unknown>aNumber); // NOT SUPPORTED IN JSX
 const aCast1: boolean = aNumber as unknown as boolean;
 
-export function hi() {
+export function hi(): string {
     return 'hi';
 }

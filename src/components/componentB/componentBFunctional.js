@@ -1,5 +1,5 @@
 import React from 'react';
-import hi from '@legacyUtils';
+import {hi} from '@legacyUtils';
 import {utils} from '@utils';
 
 export default function ComponentBFunctional(props) {
